@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import tag from '../assets/tag.svg';
+import { MovieContext } from '../context/AuthContext';
 import { getImageUrl } from "../utilites/getImageUrl";
 import MovieDetails from './MovieDetails';
 import Ratting from "./Ratting";
@@ -9,6 +10,8 @@ const MovieCard = ({movie}) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
+
+    const {cartData, setCartData} = useContext(MovieContext);
 
     const handleModalClose =()=>{
         setSelectedMovie(null);
@@ -20,6 +23,22 @@ const MovieCard = ({movie}) => {
         setShowModal(true);
     }
 
+    const handleAddToCart =(event,movie)=>{
+        event.stopPropagation();
+        const found =cartData.find((item) => {
+            return item.id === movie.id
+        });
+
+        if(!found){
+          setCartData([...cartData, movie]);
+          alert('Movie is Added Successfully')
+        }
+        else{
+            alert('Movie is Already Added to Cart')
+        }
+         
+      }
+
     return (
      <section>
     {
@@ -27,6 +46,7 @@ const MovieCard = ({movie}) => {
           <MovieDetails
           movie={selectedMovie}
           onClose ={()=> handleModalClose(!showModal)}
+          onCartAdd={handleAddToCart}
           ></MovieDetails>
         
     }
@@ -39,11 +59,13 @@ const MovieCard = ({movie}) => {
          <div className="flex items-center space-x-1 mb-5">
          <Ratting value={movie.rating}></Ratting>
                  </div>
-         <a className="bg-primary rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
+         <button
+         onClick={(e)=>handleAddToCart(e, movie)}
+         className="bg-primary rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
              href="#">
              <img src={tag} alt="" />
              <span>$ {movie.price} | Add to Cart</span>
-         </a>
+         </button>
      </figcaption>
     </figure>
      </div>
