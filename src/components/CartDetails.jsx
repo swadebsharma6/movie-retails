@@ -27,7 +27,7 @@ const CartDetails = ({ onClose }) => {
           </h2>
           <div className="space-y-8 lg:space-y-12 max-h-[450px] overflow-auto mb-10 lg:mb-14">
             
-          { cartData.length > 0 ? <h3 className="text-3xl font-bold">No Data Here, Please Added Some dAta</h3> :
+          {
              ( cartData.map((item, idx) => (
                 <div key={idx} className="grid grid-cols-[1fr_auto] gap-4">
                   <div className="flex items-center gap-4">
